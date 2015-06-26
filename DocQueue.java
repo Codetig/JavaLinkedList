@@ -1,35 +1,48 @@
-package JavaLinkedList;
 
 import java.util.Scanner;
 public class DocQueue{
   private Document last;
 
-  public static void main(String[] args){
+  public static void main(String[] args) {
     DocQueue queue = new DocQueue();
 
     controller(queue);
 
     System.out.println("Thank you for using the DocQueue.");
-
   }
 
   public static void controller(DocQueue queue) {
     Scanner input = new Scanner(System.in);
     System.out.println("Type what you want to do? ('push', 'pop', 'display', 'end')");
-    String response = next();
+    String response = input.next();
 
     if(response.equalsIgnoreCase("pop")) {
-      queue.pop();
+      Document popped = queue.pop();
+      System.out.println("Title: " + popped.getTitle() + "  Type: " + popped.getType());
     } else if(response.equalsIgnoreCase("display")) {
       System.out.println(queue.listAll());
     } else if(response.equalsIgnoreCase("push")) {
+      input.nextLine(); //consume the leftover nextline character
+      //get title from the user
+      System.out.println("Please type a title for your document: ");
+      String userTitle = input.nextLine();
+
+      //get type from the user
       System.out.println("Type 1 for a PDF Document and 2 for a Word Document");
-      int dtype = nextInt();
-      System.out.println("Please type a title for your document:");
-      String userTitle = nextLine();
-      dtype == 1 ? queue.push(new PdfDocument(userTitle)) : queue.push(new WordDocument(userTitle));
-    } else {
+      int dtype = input.nextInt();
+
+      if(dtype == 1) {
+        queue.push(new PdfDocument(userTitle));
+      } else if (dtype == 2) {
+        queue.push(new WordDocument(userTitle));
+      } else {
+        System.out.println("Invalid Type-number. Document was not added.");
+      }
+
+    } else if(response.equalsIgnoreCase("end")){
       return;
+    } else {
+      System.out.println("Invalid command. Please try again.");
     }
 
     controller(queue);
@@ -54,10 +67,11 @@ public class DocQueue{
 
   public String listAll(){
     if(last == null) return null;
-    String result = "\nTitle: " + last.getTitle() + " Type: " + last.getType();
-    while (last.getNext() != null){
-      result = "\nTitle: " + (last.getNext()).getTitle() + " Type: " + (last.getNext()).getType() + result;
-      last = last.getNext();
+    Document temp = last;
+    String result = "\nTitle: " + last.getTitle() + "  Type: " + last.getType();
+    while (temp.getNext() != null){
+      result = "\nTitle: " + (temp.getNext()).getTitle() + "  Type: " + (temp.getNext()).getType() + result;
+      temp = temp.getNext();
     }
     return result;
   }
@@ -86,11 +100,11 @@ class Document{
   //public Document(){}
 
   public String getTitle() {
-    return name;
+    return title;
   }
   
   protected void setTitle(String str){
-    name = str;
+    title = str;
   }
 
   public String getType(){
