@@ -17,8 +17,13 @@ public class DocQueue{
     String response = input.next();
 
     if(response.equalsIgnoreCase("pop")) {
-      Document popped = queue.pop();
-      System.out.println("Title: " + popped.getTitle() + "  Type: " + popped.getType());
+      //If pop fails to return a document then the queue is empty
+      Object popped = queue.pop();
+      if(popped instanceof Document){
+        System.out.println("Title: " + ((Document)popped).getTitle() + "  Type: " + ((Document)popped).getType());
+      } else {
+        System.out.println("The queue is empty");
+      }
     } else if(response.equalsIgnoreCase("display")) {
       System.out.println(queue.listAll());
     } else if(response.equalsIgnoreCase("push")) {
@@ -77,7 +82,7 @@ public class DocQueue{
   }
 
   public Document pop() {
-    if( last == null) return null;
+    if(last == null) return null;
     if(last.getNext() == null){
       Document t = last;
       last = null;
