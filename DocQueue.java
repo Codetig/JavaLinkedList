@@ -98,11 +98,9 @@ public class DocQueue{
   }
 }
 
-class Document{
+abstract class Document{
   private String title;
   private Document nextDoc;
-  
-  //public Document(){}
 
   public String getTitle() {
     return title;
@@ -112,14 +110,7 @@ class Document{
     title = str;
   }
 
-  public String getType(){
-    if(this instanceof PdfDocument) {
-      return "PDF Document";
-    } else {
-      return "Word Document";
-    }
-
-  }
+  abstract String getType();
 
   protected void setNext(Document doc){
     nextDoc = doc;
@@ -149,6 +140,10 @@ class PdfDocument extends Document{
     numDoc++;
   }
 
+  public String getType(){
+    return "PDF Document";
+  }
+
 }
 
 class WordDocument extends Document{
@@ -163,5 +158,9 @@ class WordDocument extends Document{
   public WordDocument(){
     super.setTitle("Word Doc" + numDoc);
     numDoc++;
+  }
+
+  public String getType(){
+    return "Word Document";
   }
 }
