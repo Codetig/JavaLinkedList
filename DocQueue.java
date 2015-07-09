@@ -28,6 +28,7 @@ public class DocQueue{
       System.out.println(queue.listAll());
     } else if(response.equalsIgnoreCase("push")) {
       input.nextLine(); //consume the leftover nextline character
+
       //get title from the user
       System.out.println("Please type a title for your document: ");
       String userTitle = input.nextLine();
@@ -128,7 +129,7 @@ abstract class Document{
 }
 
 class PdfDocument extends Document{
-  private int numDoc = 0;
+  private int numDoc;
   public PdfDocument(String title) {
     super.setTitle(title);
     numDoc++;
@@ -136,10 +137,10 @@ class PdfDocument extends Document{
 
   public PdfDocument(){
     setTitle("PDF Doc" + (numDoc + 1));
-    // this("PDF Doc" + (numDoc + 1)); // could not do this?
     numDoc++;
   }
 
+  @Override
   public String getType(){
     return "PDF Document";
   }
@@ -160,6 +161,7 @@ class WordDocument extends Document{
     numDoc++;
   }
 
+  @Override
   public String getType(){
     return "Word Document";
   }
